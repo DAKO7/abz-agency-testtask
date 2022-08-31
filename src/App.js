@@ -1,6 +1,10 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
+import React from 'react';
+import axios from 'axios';
 
+import Header from './components/Header';
+import Card from './components/Card';
+
+import Button from '@mui/material/Button';
 import {
   RadioGroup,
   FormControlLabel,
@@ -18,21 +22,82 @@ import {
 } from '@mui/material';
 
 function App() {
+  const [users, setUsers] = React.useState([]);
+  const [positions, setPositions] = React.useState([]);
+
+  const [usersToShow, setUsersToShow] = React.useState(6);
+  const [isExpanded, setIsExpanded] = React.useState(false);
+
+  const [username, setUsername] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [phone, setPhone] = React.useState('');
+  const [position, setPosition] = React.useState('');
+  const [imageUrl, setImageUrl] = React.useState('');
+
+  React.useEffect(() => {
+    async function fetchData() {
+      try {
+        const [usersResponse, positionsResponse] = await Promise.all([
+          axios.get('https://630e5cbb37925634187c3500.mockapi.io/users'),
+          axios.get('https://630e5cbb37925634187c3500.mockapi.io/positions'),
+        ]);
+
+        // setIsLoading(false);
+
+        setUsers(usersResponse.data);
+        setPositions(positionsResponse.data);
+      } catch (err) {
+        alert('Error fetching data');
+        console.log(err);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  const onSignUp = async (obj) => {
+    try {
+      const worker = { username, email, phone, position, imageUrl };
+      setUsers((prev) => [...prev, worker]);
+      const { data } = await axios.post(
+        'https://630e5cbb37925634187c3500.mockapi.io/users',
+        worker,
+      );
+      setUsers((prev) =>
+        prev.map((users) => {
+          return {
+            ...users,
+          };
+        }),
+      );
+      axios.get('https://630e5cbb37925634187c3500.mockapi.io/users');
+    } catch (err) {
+      alert('Unable to sign up');
+      console.log(err);
+    }
+  };
+
+  const showMore = () => {
+    if (usersToShow === 6) {
+      setUsersToShow(users.length);
+      setIsExpanded(true);
+    } else {
+      setUsersToShow(6);
+      setIsExpanded(false);
+    }
+    // usersToShow === 3 ? ( setUsersToShow(users.length), setIsExpanded(true) ) : (setUsersToShow(3), setIsExpanded(false))
+  };
+
+  const myRef = React.useRef(null);
+
+  const executeScroll = () => {
+    console.log('123');
+    myRef.current.scrollIntoView();
+  }; // run this function from an event handler or pass it to useEffect to execute scroll
+
   return (
     <div className="App clear">
-      <header className="d-flex justify-between align-center">
-        <div className="headerLeft">
-          <img src="/img/Logo.svg" alt="Logo"></img>
-        </div>
-        <ul className="d-flex headerRight">
-          <li className="mr-10">
-            <button className="btn-primary">Users</button>
-          </li>
-          <li>
-            <button className="btn-primary">Sign up</button>
-          </li>
-        </ul>
-      </header>
+      <Header scrollTo={executeScroll} />
 
       <div className="info-section">
         <div className="card-overlay">
@@ -52,49 +117,53 @@ function App() {
         </div>
       </div>
 
-      <div className="cards-section d-flex flex-column align-center">
+      <div className="cards-section d-flex flex-column align-center" ref={myRef}>
         <h1>Working with GET request</h1>
-        <div className="cards d-flex justify-between">
-          <div className="card d-flex flex-column align-center">
-            <img width={70} height={70} src="/img/photo-cover.svg" alt="avatar"></img>
-            <p className="card-name">Takamaru Ayako Jurrien</p>
-            <div className="card-info">
-              <p className="card-info-job">Lead Independent Director</p>
-              <p className="card-info-email">Takamuru@gmail.com</p>
-              <p className="card-info-phone">+38 (098) 278 90 24</p>
-            </div>
-          </div>
-          <div className="card d-flex flex-column align-center">
-            <img width={70} height={70} src="/img/photo-cover.svg" alt="avatar"></img>
-            <p className="card-name">Takamaru Ayako Jurrien</p>
-            <div className="card-info">
-              <p className="card-info-job">Lead Independent Director</p>
-              <p className="card-info-email">Takamuru@gmail.com</p>
-              <p className="card-info-phone">+38 (098) 278 90 24</p>
-            </div>
-          </div>
-          <div className="card d-flex flex-column align-center">
-            <img width={70} height={70} src="/img/photo-cover.svg" alt="avatar"></img>
-            <p className="card-name">Takamaru Ayako Jurrien</p>
-            <div className="card-info">
-              <p className="card-info-job">Lead Independent Director</p>
-              <p className="card-info-email">Takamuru@gmail.com</p>
-              <p className="card-info-phone">+38 (098) 278 90 24</p>
-            </div>
-          </div>
-        </div>
-        <button className="btn-primary">Show more</button>
+        <ul className="cards d-flex justify-between flex-wrap">
+          {[...users]
+            .reverse()
+            .slice(0, usersToShow)
+            .map((obj) => (
+              <Card
+                username={obj.username}
+                position={obj.position}
+                email={obj.email}
+                phone={obj.phone}
+                imageUrl={obj.imageUrl}
+              />
+            ))}
+        </ul>
+        {users.length > 6 ? (
+          <button className="btn-primary" onClick={showMore}>
+            {isExpanded ? 'Show less' : 'Show more'}
+          </button>
+        ) : (
+          ''
+        )}
       </div>
 
       <div className="form-section d-flex flex-column align-center">
         <h1>Working with POST request</h1>
-        <div className="job-form d-flex flex-column">
-          <TextField id="outlined-name" label="Your name" />
-          <TextField className="input-email" id="outlined-name" label="Email" />
+        <form className="job-form d-flex flex-column" onSubmit={onSignUp}>
+          <TextField
+            id="outlined-name"
+            label="Your name"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <TextField
+            className="input-email"
+            id="outlined-name"
+            label="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
           <TextField
             helperText="+38 (XXX) XXX - XX - XX"
             id="demo-helper-text-aligned"
             label="Phone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
           />
           <FormControl className="position">
             <FormLabel id="demo-controlled-radio-buttons-group">Select your position</FormLabel>
@@ -104,18 +173,21 @@ function App() {
               // value={value}
               // onChange={handleChange}
             >
-              <FormControlLabel
-                value="frontenddev"
-                control={<Radio />}
-                label="Frontend developer"
-              />
-              <FormControlLabel value="backenddev" control={<Radio />} label="Backend developer" />
-              <FormControlLabel value="designer" control={<Radio />} label="Designer" />
-              <FormControlLabel value="qa" control={<Radio />} label="QA" />
+              {positions.map((obj) => (
+                <FormControlLabel
+                  control={<Radio />}
+                  label={obj.name}
+                  value={obj.name}
+                  onChange={(e) => setPosition(e.target.value)}
+                />
+              ))}
             </RadioGroup>
           </FormControl>
           <TextField className="photo-uploader" name="upload-photo" type="file" />
-        </div>
+        </form>
+        <button className="btn-primary" onClick={onSignUp}>
+          Sign up
+        </button>
       </div>
     </div>
   );
