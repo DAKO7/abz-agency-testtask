@@ -4,20 +4,12 @@ import axios from 'axios';
 import Header from './components/Header';
 import Card from './components/Card';
 
-import Button from '@mui/material/Button';
 import {
   RadioGroup,
   FormControlLabel,
   FormLabel,
   Radio,
   FormControl,
-  FilledInput,
-  FormHelperText,
-  Input,
-  InputAdornment,
-  InputBase,
-  InputLabel,
-  OutlinedInput,
   TextField,
   CircularProgress,
 } from '@mui/material';
@@ -29,6 +21,8 @@ function App() {
   const [usersToShow, setUsersToShow] = React.useState(6);
   const [isExpanded, setIsExpanded] = React.useState(false);
 
+  const [isSubmitted, setIsSubmitted] = React.useState(false);
+
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [username, setUsername] = React.useState('');
@@ -36,6 +30,8 @@ function App() {
   const [phone, setPhone] = React.useState('');
   const [position, setPosition] = React.useState('');
   const [imageUrl, setImageUrl] = React.useState('');
+
+  const inputFileRef = React.useRef(null);
 
   React.useEffect(() => {
     async function fetchData() {
@@ -62,10 +58,7 @@ function App() {
     try {
       const worker = { username, email, phone, position, imageUrl };
       setUsers((prev) => [...prev, worker]);
-      const { data } = await axios.post(
-        'https://630e5cbb37925634187c3500.mockapi.io/users',
-        worker,
-      );
+      const {} = await axios.post('https://630e5cbb37925634187c3500.mockapi.io/users', worker);
       setUsers((prev) =>
         prev.map((users) => {
           return {
@@ -74,6 +67,7 @@ function App() {
         }),
       );
       axios.get('https://630e5cbb37925634187c3500.mockapi.io/users');
+      setIsSubmitted(true);
     } catch (err) {
       alert('Unable to sign up');
       console.log(err);
@@ -101,6 +95,20 @@ function App() {
   const executeScrollSignUp = () => {
     signUpRef.current.scrollIntoView({ behavior: 'smooth' });
   };
+
+  // const handleChangeFile = async (event) => {
+  //   try {
+  //     const formData = new FormData();
+  //     const file = event.target.files[0];
+  //     formData.append('image', file);
+  //     const { data } = await axios.post('', formData);
+  //     console.log(data.url);
+  //     setImageUrl(data.url);
+  //   } catch (err) {
+  //     alert('Unable to add an image');
+  //     console.warn(err);
+  //   }
+  // };
 
   return (
     <div className="App clear">
@@ -157,50 +165,70 @@ function App() {
 
       <div className="form-section d-flex flex-column align-center" ref={signUpRef}>
         <h1>Working with POST request</h1>
-        <form className="job-form d-flex flex-column" onSubmit={onSignUp}>
-          <TextField
-            id="outlined-name"
-            label="Your name"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <TextField
-            className="input-email"
-            id="outlined-name"
-            label="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <TextField
-            helperText="+38 (XXX) XXX - XX - XX"
-            id="demo-helper-text-aligned"
-            label="Phone"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-          <FormControl className="position">
-            <FormLabel id="demo-controlled-radio-buttons-group">Select your position</FormLabel>
-            <RadioGroup
-              aria-labelledby="demo-controlled-radio-buttons-group"
-              name="controlled-radio-buttons-group"
-              // value={value}
-              // onChange={handleChange}
-            >
-              {positions.map((obj) => (
-                <FormControlLabel
-                  control={<Radio />}
-                  label={obj.name}
-                  value={obj.name}
-                  onChange={(e) => setPosition(e.target.value)}
-                />
-              ))}
-            </RadioGroup>
-          </FormControl>
-          <TextField className="photo-uploader" name="upload-photo" type="file" />
-        </form>
-        <button className="btn-primary" onClick={onSignUp}>
-          Sign up
-        </button>
+        {isSubmitted ? (
+          <img className="mt-50" src="img/success-image.svg" alt="Success" />
+        ) : (
+          <div className="job-form d-flex flex-column" onSubmit={onSignUp}>
+            <TextField
+              id="outlined-name"
+              label="Your name"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <TextField
+              className="input-email"
+              id="outlined-name"
+              label="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              helperText="+38 (XXX) XXX - XX - XX"
+              id="demo-helper-text-aligned"
+              label="Phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+            {isLoading ? (
+              <CircularProgress className="loading" />
+            ) : (
+              <FormControl className="position">
+                <FormLabel id="demo-controlled-radio-buttons-group">Select your position</FormLabel>
+                <RadioGroup
+                  aria-labelledby="demo-controlled-radio-buttons-group"
+                  name="controlled-radio-buttons-group"
+                  // value={value}
+                  // onChange={handleChange}
+                >
+                  {positions.map((obj) => (
+                    <FormControlLabel
+                      control={<Radio />}
+                      label={obj.name}
+                      value={obj.name}
+                      onChange={(e) => setPosition(e.target.value)}
+                    />
+                  ))}
+                </RadioGroup>
+              </FormControl>
+            )}
+            <TextField
+              ref={inputFileRef}
+              // onChange={handleChangeFile}
+              className="photo-uploader"
+              name="upload-photo"
+              type="file"
+            />
+            {/* <input ref={inputFileRef} type="file" onChange={handleChangeFile} /> */}
+            {/* <img src={`http://localhost:3000${imageUrl}`} alt="upd" /> */}
+            <button
+              onClick={onSignUp}
+              className="btn-primary btn-form"
+              type="submit"
+              value="submit">
+              Sign up
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

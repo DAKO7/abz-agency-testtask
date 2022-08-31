@@ -23,6 +23,10 @@ p {
   line-height: 26px;
 }
 
+.loading {
+  margin: 25px auto 25px auto;
+}
+
 .btn-primary {
   height: 34px;
   width: auto;
@@ -48,6 +52,11 @@ p {
   &:active {
     background: darken(#f4e041, 5%);
   }
+}
+
+.btn-form {
+  max-width: 100px;
+  margin: 50px auto 0 auto;
 }
 
 body {
