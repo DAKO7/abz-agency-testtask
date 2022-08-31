@@ -19,6 +19,7 @@ import {
   InputLabel,
   OutlinedInput,
   TextField,
+  CircularProgress,
 } from '@mui/material';
 
 function App() {
@@ -27,6 +28,8 @@ function App() {
 
   const [usersToShow, setUsersToShow] = React.useState(6);
   const [isExpanded, setIsExpanded] = React.useState(false);
+
+  const [isLoading, setIsLoading] = React.useState(true);
 
   const [username, setUsername] = React.useState('');
   const [email, setEmail] = React.useState('');
@@ -42,7 +45,7 @@ function App() {
           axios.get('https://630e5cbb37925634187c3500.mockapi.io/positions'),
         ]);
 
-        // setIsLoading(false);
+        setIsLoading(false);
 
         setUsers(usersResponse.data);
         setPositions(positionsResponse.data);
@@ -88,16 +91,20 @@ function App() {
     // usersToShow === 3 ? ( setUsersToShow(users.length), setIsExpanded(true) ) : (setUsersToShow(3), setIsExpanded(false))
   };
 
-  const myRef = React.useRef(null);
+  const usersRef = React.useRef(null);
+  const signUpRef = React.useRef(null);
 
-  const executeScroll = () => {
-    console.log('123');
-    myRef.current.scrollIntoView();
+  const executeScrollUsers = () => {
+    usersRef.current.scrollIntoView({ behavior: 'smooth' });
   }; // run this function from an event handler or pass it to useEffect to execute scroll
+
+  const executeScrollSignUp = () => {
+    signUpRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <div className="App clear">
-      <Header scrollTo={executeScroll} />
+      <Header scrollToUsers={executeScrollUsers} scrollToSignUp={executeScrollSignUp} />
 
       <div className="info-section">
         <div className="card-overlay">
@@ -113,26 +120,32 @@ function App() {
             interfaces with accessibility in mind. They should also be excited to learn, as the
             world of Front-End Development keeps evolving.
           </p>
-          <button className="btn-primary">Sign up</button>
+          <button onClick={executeScrollSignUp} className="btn-primary">
+            Sign up
+          </button>
         </div>
       </div>
 
-      <div className="cards-section d-flex flex-column align-center" ref={myRef}>
-        <h1>Working with GET request</h1>
-        <ul className="cards d-flex justify-between flex-wrap">
-          {[...users]
-            .reverse()
-            .slice(0, usersToShow)
-            .map((obj) => (
-              <Card
-                username={obj.username}
-                position={obj.position}
-                email={obj.email}
-                phone={obj.phone}
-                imageUrl={obj.imageUrl}
-              />
-            ))}
-        </ul>
+      <div className="cards-section d-flex flex-column align-center" ref={usersRef}>
+        <h1 className="mb-50">Working with GET request</h1>
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          <ul className="cards d-flex justify-between flex-wrap">
+            {[...users]
+              .reverse()
+              .slice(0, usersToShow)
+              .map((obj) => (
+                <Card
+                  username={obj.username}
+                  position={obj.position}
+                  email={obj.email}
+                  phone={obj.phone}
+                  imageUrl={obj.imageUrl}
+                />
+              ))}
+          </ul>
+        )}
         {users.length > 6 ? (
           <button className="btn-primary" onClick={showMore}>
             {isExpanded ? 'Show less' : 'Show more'}
@@ -142,7 +155,7 @@ function App() {
         )}
       </div>
 
-      <div className="form-section d-flex flex-column align-center">
+      <div className="form-section d-flex flex-column align-center" ref={signUpRef}>
         <h1>Working with POST request</h1>
         <form className="job-form d-flex flex-column" onSubmit={onSignUp}>
           <TextField

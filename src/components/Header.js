@@ -8,12 +8,14 @@ export default function Header(props) {
       </div>
       <ul className="d-flex headerRight">
         <li className="mr-10">
-          <button onClick={props.scrollTo} className="btn-primary">
+          <button onClick={props.scrollToUsers} className="btn-primary">
             Users
           </button>
         </li>
         <li>
-          <button className="btn-primary">Sign up</button>
+          <button onClick={props.scrollToSignUp} className="btn-primary">
+            Sign up
+          </button>
         </li>
       </ul>
     </header>
