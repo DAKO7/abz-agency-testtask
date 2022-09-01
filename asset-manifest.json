@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/abz-agency-testtask/static/css/main.1d967d2d.css",
+    "main.js": "/abz-agency-testtask/static/js/main.b755034f.js",
+    "index.html": "/abz-agency-testtask/index.html",
+    "main.1d967d2d.css.map": "/abz-agency-testtask/static/css/main.1d967d2d.css.map",
+    "main.b755034f.js.map": "/abz-agency-testtask/static/js/main.b755034f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1d967d2d.css",
+    "static/js/main.b755034f.js"
+  ]
+}
