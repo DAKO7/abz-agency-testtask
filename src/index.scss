@@ -130,7 +130,16 @@ body {
         margin: 0 0 20px 0;
       }
 
+      .card-title {
+        cursor: pointer;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: inherit;
+        white-space: nowrap;
+      }
+
       .card-info {
+        width: inherit;
         p {
           margin: 0;
         }
@@ -157,6 +166,218 @@ body {
 
     .photo-uploader {
       margin: 50px 0 0 0;
+    }
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  header {
+    margin: 0 auto;
+    padding: 0 60px;
+    max-width: 1024px;
+  }
+
+  .info-section {
+    position: relative;
+    text-align: center;
+    max-height: 500px;
+    max-width: 1024px;
+    width: auto;
+
+    .card-overlay {
+      max-height: 500px;
+      max-width: 1024px;
+      overflow: hidden;
+      background: black;
+    }
+
+    img {
+      height: 500px;
+    }
+
+    .info-section-content {
+      max-height: 323px;
+      max-width: 380px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+    }
+
+    button {
+      margin-top: 10px;
+    }
+  }
+
+  .cards-section {
+    margin: 140px 60px 0 60px;
+
+    .cards {
+      margin: 0 0 50px 0;
+
+      .card {
+        max-width: 282px;
+        min-width: 282px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  header {
+    margin: 0 auto;
+    padding: 0 32px;
+    max-width: 1024px;
+  }
+
+  .info-section {
+    position: relative;
+    text-align: center;
+    max-height: 500px;
+    max-width: 768px;
+    width: auto;
+
+    .card-overlay {
+      max-height: 500px;
+      max-width: 768px;
+      overflow: hidden;
+      background: black;
+    }
+
+    img {
+      height: 500px;
+    }
+
+    .info-section-content {
+      max-height: 323px;
+      max-width: 380px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+    }
+
+    button {
+      margin-top: 10px;
+    }
+  }
+
+  .cards-section {
+    margin: 140px 32px 0 32px;
+
+    h1 {
+      text-align: center;
+    }
+
+    .cards {
+      margin: 0 0 50px 0;
+      justify-content: space-around;
+
+      .card {
+        max-width: 344px;
+        min-width: 344px;
+      }
+    }
+  }
+
+  .form-section {
+    margin: 140px 32px 100px 32px;
+
+    h1 {
+      text-align: center;
+    }
+
+    .job-form {
+      max-width: 380px;
+      width: 100%;
+      margin: 50px 0 50px 0;
+    }
+  }
+}
+
+@media only screen and (max-width: 360px) {
+  header {
+    margin: 0 auto;
+    padding: 0 16px;
+    max-width: 1024px;
+  }
+
+  .info-section {
+    position: relative;
+    text-align: center;
+    max-height: 500px;
+    max-width: 360px;
+    width: auto;
+
+    .card-overlay {
+      max-height: 500px;
+      max-width: 360px;
+      overflow: hidden;
+      background: black;
+    }
+
+    img {
+      height: 500px;
+    }
+
+    .info-section-content {
+      max-height: 389px;
+      max-width: 328px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+    }
+
+    button {
+      margin-top: 10px;
+    }
+  }
+
+  .cards-section {
+    margin: 140px 16px 0 16px;
+
+    h1 {
+      text-align: center;
+    }
+
+    .cards {
+      margin: 0 0 50px 0;
+      justify-content: space-around;
+
+      .card {
+        max-width: 344px;
+        min-width: 344px;
+      }
+    }
+  }
+
+  .form-section {
+    margin: 140px 16px 100px 16px;
+
+    h1 {
+      text-align: center;
+    }
+
+    .job-form {
+      max-width: 380px;
+      width: 100%;
+      margin: 50px 0 50px 0;
+
+      .input-email {
+        margin: 50px 0 50px 0;
+      }
+
+      .position {
+        margin: 25px 0 0 0;
+      }
+
+      .photo-uploader {
+        margin: 50px 0 0 0;
+      }
     }
   }
 }

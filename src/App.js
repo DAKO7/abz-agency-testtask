@@ -12,6 +12,7 @@ import {
   FormControl,
   TextField,
   CircularProgress,
+  Tooltip,
 } from '@mui/material';
 
 function App() {
@@ -164,7 +165,7 @@ function App() {
       </div>
 
       <div className="form-section d-flex flex-column align-center" ref={signUpRef}>
-        <h1>Working with POST request</h1>
+        {isSubmitted ? <h1>User successfully registered</h1> : <h1>Working with POST request</h1>}
         {isSubmitted ? (
           <img className="mt-50" src="img/success-image.svg" alt="Success" />
         ) : (
@@ -213,6 +214,7 @@ function App() {
             )}
             <TextField
               ref={inputFileRef}
+              onChange={(e) => setImageUrl(e.target.value)}
               // onChange={handleChangeFile}
               className="photo-uploader"
               name="upload-photo"
