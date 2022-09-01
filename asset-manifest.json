@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/abz-agency-testtask/static/css/main.1d967d2d.css",
-    "main.js": "/abz-agency-testtask/static/js/main.b755034f.js",
+    "main.js": "/abz-agency-testtask/static/js/main.87b8711d.js",
     "index.html": "/abz-agency-testtask/index.html",
     "main.1d967d2d.css.map": "/abz-agency-testtask/static/css/main.1d967d2d.css.map",
-    "main.b755034f.js.map": "/abz-agency-testtask/static/js/main.b755034f.js.map"
+    "main.87b8711d.js.map": "/abz-agency-testtask/static/js/main.87b8711d.js.map"
   },
   "entrypoints": [
     "static/css/main.1d967d2d.css",
-    "static/js/main.b755034f.js"
+    "static/js/main.87b8711d.js"
   ]
 }
